@@ -1,0 +1,144 @@
+:root {
+  /* H007 Solutions Brand Colors */
+  --jm-dark-blue: #2E3A8C;
+  --jm-dark-blue-rgb: 46, 58, 140;
+  --jm-light-blue: #4A5FD9;
+  --jm-light-blue-rgb: 74, 95, 217;
+  --jm-navy: #1A2254;
+  --jm-navy-rgb: 26, 34, 84;
+
+  /* Brand Neutrals */
+  --jm-white: #FFFFFF;
+  --jm-light-gray: #F5F7FA;
+  --jm-border-gray: #E5E7EB;
+  --jm-dark-gray: #4A4A4A;
+  --jm-black: #1A1A1A;
+
+  /* Functional Accents */
+  --color-success: #10B981;
+  --color-success-bg: rgba(16, 185, 129, 0.12);
+  --color-danger: #EF4444;
+  --color-danger-bg: rgba(239, 68, 68, 0.12);
+  --color-warning: #F59E0B;
+  --color-warning-bg: rgba(245, 158, 11, 0.12);
+  --color-info: #3B82F6;
+  --color-info-bg: rgba(59, 130, 246, 0.12);
+  --color-purple: #8B5CF6;
+  --color-teal: #14B8A6;
+  --color-amber: #D97706;
+
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --font-size-h1: 2rem;
+  /* 32px */
+  --font-size-h2: 1.5rem;
+  /* 24px */
+  --font-size-h3: 1.25rem;
+  /* 20px */
+  --font-size-body: 1rem;
+  /* 16px */
+  --font-size-small: 0.875rem;
+  /* 14px */
+  --font-size-caption: 0.75rem;
+  /* 12px */
+
+  --line-height-heading: 1.2;
+  --line-height-body: 1.5;
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  /* 4px */
+  --spacing-sm: 0.5rem;
+  /* 8px */
+  --spacing-md: 1rem;
+  /* 16px */
+  --spacing-lg: 1.5rem;
+  /* 24px */
+  --spacing-xl: 2rem;
+  /* 32px */
+  --spacing-2xl: 3rem;
+  /* 48px */
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-btn: 8px;
+  /* 8px per brand guidelines */
+  --radius-input: 8px;
+  /* 8px per brand guidelines */
+  --radius-card: 12px;
+  /* 12px per brand guidelines */
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.4s ease;
+
+  /* Default Light Mode Theme Tokens */
+  --bg-app: #F5F7FA;
+  --bg-surface: #FFFFFF;
+  --bg-surface-elevated: #FFFFFF;
+  --bg-surface-subtle: #F8FAFC;
+  --bg-input: #FFFFFF;
+
+  --text-primary: #1A1A1A;
+  --text-secondary: #4A4A4A;
+  --text-muted: #8E95A5;
+  --text-inverse: #FFFFFF;
+
+  --border-color: #E2E8F0;
+  --border-subtle: #EDF2F7;
+  --border-focus: #2E3A8C;
+
+  --nav-bg: #FFFFFF;
+  --nav-border: #E2E8F0;
+  --nav-text: #4A4A4A;
+  --nav-text-active: #2E3A8C;
+  --nav-bg-active: rgba(46, 58, 140, 0.08);
+
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --card-shadow-hover: 0 8px 24px rgba(46, 58, 140, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --modal-shadow: 0 20px 40px -15px rgba(26, 34, 84, 0.25), 0 0 0 1px rgba(226, 232, 240, 0.8);
+  --dropdown-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.06);
+
+  --chart-grid-color: rgba(226, 232, 240, 0.8);
+  --chart-text-color: #64748B;
+}
+
+/* Dark Mode Theme Tokens */
+[data-theme="dark"] {
+  --bg-app: #0D1126;
+  --bg-surface: #141A38;
+  --bg-surface-elevated: #1B234B;
+  --bg-surface-subtle: #182045;
+  --bg-input: #101633;
+
+  --text-primary: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-muted: #7E8DA6;
+  --text-inverse: #0D1126;
+
+  --border-color: #263163;
+  --border-subtle: #1E2750;
+  --border-focus: #4A5FD9;
+
+  --nav-bg: #141A38;
+  --nav-border: #263163;
+  --nav-text: #94A3B8;
+  --nav-text-active: #FFFFFF;
+  --nav-bg-active: rgba(74, 95, 217, 0.2);
+
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(74, 95, 217, 0.12);
+  --card-shadow-hover: 0 10px 28px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(74, 95, 217, 0.3);
+  --modal-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(74, 95, 217, 0.25);
+  --dropdown-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(74, 95, 217, 0.2);
+
+  --chart-grid-color: rgba(38, 49, 99, 0.6);
+  --chart-text-color: #94A3B8;
+}

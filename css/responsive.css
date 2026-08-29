@@ -1,0 +1,141 @@
+/* Responsive Styles for H007 Solutions */
+
+/* Desktop & Standard Screens (> 1024px) */
+@media (min-width: 1025px) {
+  .charts-grid-2col {
+    grid-template-columns: 1.35fr 1fr;
+  }
+
+  .bottom-dashboard-grid {
+    grid-template-columns: 1.6fr 1fr;
+  }
+}
+
+/* Tablet Landscape (860px to 1024px) */
+@media (max-width: 1024px) {
+  .metric-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .charts-grid-2col {
+    grid-template-columns: 1fr;
+  }
+
+  .bottom-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header-container {
+    padding: 0 var(--spacing-md);
+  }
+}
+
+/* Tablet Portrait & Large Mobile (<= 860px) */
+@media (max-width: 860px) {
+  .header-container {
+    height: auto;
+    padding: var(--spacing-sm) var(--spacing-md);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .main-nav {
+    order: 3;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 4px;
+    justify-content: flex-start;
+  }
+
+  .header-actions {
+    margin-left: auto;
+  }
+
+  .search-container {
+    width: 150px;
+  }
+
+  .search-container:focus-within {
+    width: 190px;
+  }
+
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-main {
+    padding: var(--spacing-md);
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+
+  .form-row,
+  .form-row-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-group {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-group .form-control,
+  .filter-group .form-select,
+  .filter-group .btn {
+    width: 100%;
+  }
+
+  .notification-drawer {
+    right: 16px;
+    left: 16px;
+    width: auto;
+  }
+
+  .toast-container {
+    right: 16px;
+    left: 16px;
+    bottom: 16px;
+  }
+
+  .toast {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .user-info {
+    display: none;
+  }
+}
+
+/* Small Mobile (<= 480px) */
+@media (max-width: 480px) {
+  .nav-tab-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .metric-value {
+    font-size: 1.5rem;
+  }
+
+  .credit-card-visual {
+    height: 180px;
+    padding: 16px;
+  }
+
+  .cc-number {
+    font-size: 1rem;
+    letter-spacing: 2px;
+  }
+}

@@ -1,1 +1,22 @@
-
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 50" width="240" height="50" fill="none">
+  <style>
+    .brand-text-main { fill: #1A1A1A; }
+    [data-theme="dark"] .brand-text-main, :root.dark .brand-text-main { fill: #FFFFFF; }
+    @media (prefers-color-scheme: dark) {
+      .brand-text-main { fill: #1A1A1A; }
+    }
+  </style>
+  <!-- H007 Solutions Logo Mark -->
+  <g class="logo-mark">
+    <rect x="4" y="5" width="40" height="40" rx="10" fill="#2E3A8C" />
+    <path d="M 17 17 L 17 33 M 31 17 L 31 33 M 17 25 L 31 25" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="34" cy="16" r="2.5" fill="#4A5FD9" />
+  </g>
+  <!-- Brand Typography -->
+  <text class="brand-text-main" x="56" y="27" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-weight="800" font-size="19" letter-spacing="-0.3px">
+    H007 Solutions
+  </text>
+  <text x="56" y="39" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-weight="600" font-size="9" fill="#4A5FD9" letter-spacing="1.5px">
+    FINANCIAL SUITE
+  </text>
+</svg>

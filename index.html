@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>H007 Solutions | Personal Finance Dashboard</title>
+  <meta name="description"
+    content="Personal Finance Dashboard by H007 Solutions. Real-time income tracking, expense management, budget allocations, wallet cards, savings goals, and financial analytics.">
+  <meta name="author" content="H007 Solutions">
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Application Styles -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-container">
+
+      <!-- Brand Logo -->
+      <a class="brand-wrapper" href="javascript:void(0);" title="H007 Solutions Finance Dashboard">
+        <img src="assets/logo.svg" alt="H007 Solutions Logo" class="brand-logo-img">
+      </a>
+
+      <!-- Top Navigation Tabs (6 Primary Views) -->
+      <nav class="main-nav" aria-label="Main Navigation">
+        <button class="nav-tab-btn active" data-tab="dashboard">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="transactions">
+          <i data-lucide="arrow-left-right"></i>
+          <span>Transactions</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="wallet">
+          <i data-lucide="credit-card"></i>
+          <span>Wallet</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="goals">
+          <i data-lucide="target"></i>
+          <span>Goals</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="analytics">
+          <i data-lucide="bar-chart-3"></i>
+          <span>Analytics</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="reports">
+          <i data-lucide="file-text"></i>
+          <span>Reports</span>
+        </button>
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <!-- Global Search -->
+        <div class="search-container">
+          <i data-lucide="search" class="search-icon"></i>
+          <input type="text" id="globalSearchInput" class="search-input" placeholder="Search transactions..."
+            autocomplete="off">
+          <!-- Search Dropdown Results -->
+          <div id="globalSearchResults" class="search-results-dropdown"></div>
+        </div>
+
+        <!-- Dark / Light Theme Toggle -->
+        <button class="header-btn" id="themeToggleBtn" title="Toggle Light / Dark Mode" aria-label="Toggle Theme">
+          <i data-lucide="moon"></i>
+        </button>
+
+        <!-- Notifications Trigger -->
+        <button class="header-btn" id="notificationsBtn" title="Notifications" aria-label="View Notifications">
+          <i data-lucide="bell"></i>
+          <span class="badge-count" id="notifCountBadge">2</span>
+        </button>
+
+        <!-- Settings Modal Trigger -->
+        <button class="header-btn" id="headerSettingsBtn" title="Preferences & Settings" aria-label="Settings">
+          <i data-lucide="settings"></i>
+        </button>
+
+        <!-- User Profile Pill -->
+        <button class="user-profile-btn" id="userProfileTrigger" title="Account Settings">
+          <div class="user-avatar" id="userAvatarDisplay">AM</div>
+          <div class="user-info">
+            <span class="user-name" id="userNameDisplay">Alex Morgan</span>
+            <span class="user-role">H007 Member</span>
+          </div>
+          <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--text-muted);"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Notification Drawer Dropdown -->
+    <div id="notificationDrawer" class="notification-drawer">
+      <div class="notification-header">
+        <strong style="font-size: 14px; color: var(--text-primary);">Notifications</strong>
+        <span style="font-size: 11px; color: var(--jm-light-blue); font-weight: 600;">Financial Alerts</span>
+      </div>
+      <div class="notification-list" id="notificationList">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="app-main">
+    <!-- View 1: Dashboard -->
+    <section id="dashboard-view" class="tab-content-panel active" aria-labelledby="Dashboard Panel"></section>
+
+    <!-- View 2: Transactions -->
+    <section id="transactions-view" class="tab-content-panel" aria-labelledby="Transactions Panel"></section>
+
+    <!-- View 3: Wallet -->
+    <section id="wallet-view" class="tab-content-panel" aria-labelledby="Wallet Panel"></section>
+
+    <!-- View 4: Goals -->
+    <section id="goals-view" class="tab-content-panel" aria-labelledby="Goals Panel"></section>
+
+    <!-- View 5: Analytics -->
+    <section id="analytics-view" class="tab-content-panel" aria-labelledby="Analytics Panel"></section>
+
+    <!-- View 6: Reports -->
+    <section id="reports-view" class="tab-content-panel" aria-labelledby="Reports Panel"></section>
+  </main>
+
+  <!-- ================= Shared Application Modals ================= -->
+
+  <!-- Modal 1: Add / Edit Transaction -->
+  <div id="transactionModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="txModalTitle">Add New Transaction</h3>
+        <button class="btn btn-ghost btn-icon-only modal-close-trigger"><i data-lucide="x"></i></button>
+      </div>
+      <form id="transactionForm">
+        <input type="hidden" id="modalTxId">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="modalTxType">Type</label>
+              <select id="modalTxType" class="form-select" required>
+                <option value="expense">Expense (-)</option>
+                <option value="income">Income (+)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="modalTxAmount">Amount ($)</label>
+              <input type="number" step="0.01" min="0.01" id="modalTxAmount" class="form-control" placeholder="0.00"
+                required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="modalTxCategory">Category</label>
+              <select id="modalTxCategory" class="form-select" required></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="modalTxStatus">Status</label>
+              <select id="modalTxStatus" class="form-select">
+                <option value="completed">Completed</option>
+                <option value="pending">Pending</option>
+                <option value="failed">Failed</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="modalTxRecipient">Recipient / Source Name</label>
+            <input type="text" id="modalTxRecipient" class="form-control" placeholder="e.g. Whole Foods Market, Payroll"
+              required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="modalTxDate">Date & Time</label>
+            <input type="datetime-local" id="modalTxDate" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="modalTxNotes">Notes (Optional)</label>
+            <textarea id="modalTxNotes" class="form-control" rows="2"
+              placeholder="Additional details or reference numbers"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost modal-close-trigger">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Transaction</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: Add / Edit Card -->
+  <div id="cardModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="cardModalTitle">Add Payment Card</h3>
+        <button class="btn btn-ghost btn-icon-only modal-close-trigger"><i data-lucide="x"></i></button>
+      </div>
+      <form id="cardForm">
+        <input type="hidden" id="modalCardId">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="modalCardNumber">Card Number</label>
+            <input type="text" id="modalCardNumber" class="form-control" placeholder="4532 8900 1234 5678" required
+              maxlength="19">
+            <span class="form-hint">Stored masked with highest 256-bit encryption standard</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="modalCardHolder">Cardholder Name</label>
+            <input type="text" id="modalCardHolder" class="form-control" placeholder="Alex Morgan" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="modalCardExpiry">Expiry Date (MM/YY)</label>
+              <input type="text" id="modalCardExpiry" class="form-control" placeholder="08/29" required maxlength="5">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="modalCardType">Card Network</label>
+              <select id="modalCardType" class="form-select">
+                <option value="visa">Visa</option>
+                <option value="mastercard">Mastercard</option>
+                <option value="amex">American Express</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="modalCardNickname">Card Nickname</label>
+              <input type="text" id="modalCardNickname" class="form-control" placeholder="e.g. Primary Travel Card">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="modalCardSkin">Card Theme Skin</label>
+              <select id="modalCardSkin" class="form-select">
+                <option value="default">H007 Dark Blue</option>
+                <option value="emerald">Emerald Green</option>
+                <option value="purple">Royal Purple</option>
+                <option value="dark">Obsidian Dark</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost modal-close-trigger">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Card</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Add / Edit Goal -->
+  <div id="goalModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="goalModalTitle">Create Savings Goal</h3>
+        <button class="btn btn-ghost btn-icon-only modal-close-trigger"><i data-lucide="x"></i></button>
+      </div>
+      <form id="goalForm">
+        <input type="hidden" id="modalGoalId">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="modalGoalName">Goal Title</label>
+            <input type="text" id="modalGoalName" class="form-control" placeholder="e.g. Emergency Fund, Japan Trip"
+              required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="modalGoalTarget">Target Amount ($)</label>
+              <input type="number" step="10" min="1" id="modalGoalTarget" class="form-control" placeholder="10000"
+                required>
+            </div>
+            <div class="form-group" id="modalGoalInitialGroup">
+              <label class="form-label" for="modalGoalInitial">Initial Deposit ($)</label>
+              <input type="number" step="10" min="0" id="modalGoalInitial" class="form-control" placeholder="0">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="modalGoalDate">Target Deadline</label>
+            <input type="date" id="modalGoalDate" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost modal-close-trigger">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Goal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 4: Add Funds to Goal -->
+  <div id="addFundsModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Contribute to Goal</h3>
+        <button class="btn btn-ghost btn-icon-only modal-close-trigger"><i data-lucide="x"></i></button>
+      </div>
+      <form id="addFundsForm">
+        <div class="modal-body">
+          <p style="margin-bottom: 16px; font-size: 14px;">Adding contribution to <strong id="fundsGoalNameDisplay"
+              style="color: var(--jm-dark-blue);">Emergency Fund</strong></p>
+          <div class="form-group">
+            <label class="form-label" for="fundsAmountInput">Deposit Amount ($)</label>
+            <input type="number" step="0.01" min="1" id="fundsAmountInput" class="form-control" placeholder="500.00"
+              required autofocus>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fundsNoteInput">Contribution Note (Optional)</label>
+            <input type="text" id="fundsNoteInput" class="form-control"
+              placeholder="e.g. Monthly automated transfer, Bonus">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost modal-close-trigger">Cancel</button>
+          <button type="submit" class="btn btn-primary">Deposit Funds</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 5: Confirm Deletion -->
+  <div id="confirmDeleteModal" class="modal-overlay">
+    <div class="modal-dialog" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 id="confirmDeleteTitle" style="color: var(--color-danger);">Confirm Deletion</h3>
+        <button class="btn btn-ghost btn-icon-only modal-close-trigger"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmDeleteMessage" style="color: var(--text-secondary); font-size: 14px;">Are you sure you want to
+          proceed with this deletion? This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost modal-close-trigger">Cancel</button>
+        <button type="button" id="confirmDeleteActionBtn" class="btn btn-danger">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 6: Export CSV Filter Modal -->
+  <div id="exportModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Export Transactions (CSV)</h3>
+        <button class="btn btn-ghost btn-icon-only modal-close-trigger"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="exportModalType">Transaction Type</label>
+          <select id="exportModalType" class="form-select">
+            <option value="all">All (Income & Expenses)</option>
+            <option value="income">Income Only</option>
+            <option value="expense">Expenses Only</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="exportModalStartDate">Start Date (Optional)</label>
+            <input type="date" id="exportModalStartDate" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="exportModalEndDate">End Date (Optional)</label>
+            <input type="date" id="exportModalEndDate" class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost modal-close-trigger">Cancel</button>
+        <button type="button" id="exportCsvExecuteBtn" class="btn btn-primary">
+          <i data-lucide="download"></i> Download CSV
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 7: User Profile & Preferences Settings -->
+  <div id="settingsModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Preferences & Settings</h3>
+        <button type="button" id="closeSettingsModalBtn" class="btn btn-ghost btn-icon-only"><i
+            data-lucide="x"></i></button>
+      </div>
+      <form id="settingsForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="settingsNameInput">Full Name</label>
+            <input type="text" id="settingsNameInput" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="settingsEmailInput">Email Address</label>
+            <input type="email" id="settingsEmailInput" class="form-control" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="settingsCurrencyInput">Currency Symbol</label>
+              <select id="settingsCurrencyInput" class="form-select">
+                <option value="$">USD ($)</option>
+                <option value="€">EUR (€)</option>
+                <option value="£">GBP (£)</option>
+                <option value="₹">INR (₹)</option>
+                <option value="¥">JPY (¥)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="settingsLimitInput">Monthly Spending Limit ($)</label>
+              <input type="number" min="100" step="50" id="settingsLimitInput" class="form-control" required>
+            </div>
+          </div>
+
+          <div style="border-top: 1px solid var(--border-subtle); margin-top: 20px; padding-top: 16px;">
+            <label class="form-label" style="color: var(--color-danger);">Danger Zone</label>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Reset application data back to
+              initial H007 Solutions sample dataset.</p>
+            <button type="button" id="resetAllDataBtn" class="btn btn-danger-ghost btn-sm">
+              <i data-lucide="refresh-cw"></i> Reset Demo Data
+            </button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="cancelSettingsBtn" class="btn btn-ghost">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Floating Toast Notifications Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Main JavaScript App Entry -->
+  <script type="module" src="js/app.js"></script>
+</body>
+
+</html>
